@@ -1,4 +1,4 @@
-Repository: <github-url>
+Repository: <https://github.com/AnyiHernandez/recruitment-agent>
 
 Loom: <loom-url>
 
