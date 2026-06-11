@@ -4,7 +4,7 @@ Loom: <loom-url>
 
 Notion Report: <notion-url>
 
-Time Invested: <hours>
+Time Invested: <3 horas>
 
 Notes:
 - Main recruiter-facing report: reports/oracle-ebs-recruitment-report.html
