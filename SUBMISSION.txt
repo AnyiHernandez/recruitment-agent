@@ -1,6 +1,6 @@
 Repository: <https://github.com/AnyiHernandez/recruitment-agent>
 
-Loom: <loom-url>
+Loom: <https://www.loom.com/share/d6af4ce7963d4386b5cc508d14838661>
 
 Notion Report: <https://app.notion.com/p/Reporte-oracle-recruitment-agent-2026-06-10-b8259581f2824fda9b3ecaeb1d69bab9?source=copy_link>
 
