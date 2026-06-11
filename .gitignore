@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+.env
+.venv/
+venv/
+reports/*.tmp
+reports/*.pdf
+reports/recruitment-report-*.html
+reports/recruitment-report-*.md
+AGENTS.md.txt
+.DS_Store
+Thumbs.db

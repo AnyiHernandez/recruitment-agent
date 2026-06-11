@@ -1,0 +1,13 @@
+Repository: <github-url>
+
+Loom: <loom-url>
+
+Notion Report: <notion-url>
+
+Time Invested: <hours>
+
+Notes:
+- Main recruiter-facing report: reports/oracle-ebs-recruitment-report.html
+- Notion-ready Markdown report: reports/oracle-ebs-recruitment-report.md
+- Skill instructions: agent.md
+- Notion MCP setup: NOTION_MCP_SETUP.md
