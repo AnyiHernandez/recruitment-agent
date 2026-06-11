@@ -1,131 +1,29 @@
 # Notion MCP Setup Instructions
 
-These are the steps Pablo can follow to configure Notion MCP and run this recruitment agent with new vacancies.
+Pasos que Pablo seguirá:
+Abrir el repo en Codex  
+Descarga o clona este repositorio en su entorno y ábrelo en Codex.
+Configurar el MCP de Notion  
+Si la configuración ya viene en el repo, no necesitas crear nada adicional.  
 
-## 1. Create a Notion Integration
+Si no está configurado, crea el archivo ~/.codex/config.toml con este contenido:
 
-1. Go to Notion's integration page.
-2. Create a new internal integration.
-3. Copy the integration secret.
-4. Open the Notion page or workspace where reports should be published.
-5. Share that page with the integration.
-6. Copy the target parent page ID.
+[mcp_servers.notion]
+url = "https://mcp.notion.com/mcp"
+​
+Reiniciar Codex  
+Cierra y vuelve a abrir Codex/VS Code para que cargue la configuración del MCP.
+Autenticarse con la cuenta de Notion de Pablo (primera vez)  
+Al primer uso del MCP, Codex abrirá un navegador para iniciar sesión en Notion y autorizar el acceso con la cuenta de Pablo.
 
-## 2. Configure Environment Variables
+Test rápido (verificar que el MCP está funcionando)  
+En Codex, ejecutar una acción de prueba (solo lectura), por ejemplo:  
 
-Create a `.env` file from the example:
+“List MCP tools from server notion (listTools)”, o  
+“Search a Notion page using the notion MCP server”.
+Ejecutar el skill  
 
-```bash
-copy .env.example .env
-```
+Una vez autenticado, el skill podrá operar en Notion con los permisos de la cuenta con la que Pablo autorizó (lectura/escritura según los permisos concedidos).
 
-Set:
-
-```env
-RECRUITMENT_DATA_DIR=sample-pack/sample-pack
-REPORTS_DIR=reports
-NOTION_ENABLED=true
-NOTION_PARENT_PAGE_ID=<notion-parent-page-id>
-NOTION_API_KEY=<notion-integration-secret>
-```
-
-`NOTION_API_KEY` is used by the Python fallback publisher. The MCP server can use the same integration secret.
-
-If the MCP server expects a differently named token, also map the same secret to the variable it requires:
-
-```env
-NOTION_TOKEN=<notion-integration-secret>
-```
-
-## 3. Configure Notion MCP In Cowork / Codex / OpenCode
-
-Add a Notion MCP server using the environment's MCP configuration UI or JSON config.
-
-Use the official Notion MCP server if available in the tool catalog. If a manual config is required, use the Notion MCP package supported by the environment and pass the Notion integration secret as an environment variable.
-
-Conceptual MCP config:
-
-```json
-{
-  "mcpServers": {
-    "notion": {
-      "command": "npx",
-      "args": ["-y", "@notionhq/notion-mcp-server"],
-      "env": {
-        "NOTION_API_KEY": "<notion-integration-secret>"
-      }
-    }
-  }
-}
-```
-
-If the environment uses a different Notion MCP package name, keep the same intent:
-
-- Start a Notion MCP server.
-- Authenticate it with the Notion integration secret.
-- Ensure it exposes page creation/update tools.
-- Share the destination Notion page with the integration.
-
-## 4. Run The Agent
-
-Install dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-Run:
-
-```bash
-python src/main.py
-```
-
-The agent will:
-
-1. Read vacancies from `sample-pack/sample-pack/jobs`.
-2. Read candidates from `sample-pack/sample-pack/candidates`.
-3. Generate Markdown and HTML reports in `reports/`.
-4. Attempt Notion publication when a Notion MCP transport is available.
-
-## 5. Running With New Vacancies
-
-Replace the input files:
-
-```text
-sample-pack/sample-pack/jobs
-sample-pack/sample-pack/candidates
-```
-
-Or point to another folder:
-
-```env
-RECRUITMENT_DATA_DIR=path/to/new-pack
-```
-
-Expected structure:
-
-```text
-new-pack/
-├── jobs/
-└── candidates/
-```
-
-Then run:
-
-```bash
-python src/main.py
-```
-
-## 6. Publishing Behavior
-
-The analysis pipeline and report generation are fully implemented locally.
-
-The `src/notion_publisher.py` module is intentionally isolated so the Notion publishing transport can be swapped depending on the MCP runtime provided by Cowork, Codex, or OpenCode.
-
-When `NOTION_ENABLED=true`, `NOTION_PARENT_PAGE_ID`, and `NOTION_API_KEY` are set, the current implementation publishes through the official Notion HTTP API. This gives Pablo a working publication path even if the Python process cannot directly call the active MCP tool transport.
-
-In an environment with a dedicated Notion MCP tool, replace `publish_report_to_notion` with the MCP page creation call while keeping the same interface:
-
-```python
-publish_report_to_notion(markdown_path, title) -> notion_url
-```
+ADVERTENCIA OFICIAL (documentación):  
+“Notion MCP requiere OAuth de usuario y NO soporta tokens. Esto puede no ser adecuado para agentes en la nube que corren sin interacción humana.”
